@@ -1,23 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "master_wilayah".
+ * This is the model class for table "provinsi".
  *
- * The followings are the available columns in table 'master_wilayah':
- * @property integer $id
- * @property integer $id_provinsi
- * @property integer $id_kota
- * @property integer $id_kecamatan
- * @property integer $id_kelurahan
+ * The followings are the available columns in table 'provinsi':
+ * @property integer $code
+ * @property integer $parent_code
+ * @property string $name
  */
-class MasterWilayah extends CActiveRecord
+class Provinsi extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'master_wilayah';
+		return 'provinsi';
 	}
 
 	/**
@@ -28,11 +26,12 @@ class MasterWilayah extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_provinsi, id_kota, id_kecamatan, id_kelurahan', 'required'),
-			array('id_provinsi, id_kota, id_kecamatan, id_kelurahan', 'numerical', 'integerOnly'=>true),
+			array('parent_code, name', 'required'),
+			array('parent_code', 'numerical', 'integerOnly'=>true),
+			array('name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_provinsi, id_kota, id_kecamatan, id_kelurahan', 'safe', 'on'=>'search'),
+			array('code, parent_code, name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -44,11 +43,7 @@ class MasterWilayah extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'provinsi' => array(self::BELONGS_TO, 'Provinsi', 'id_provinsi'),
-            'kota' => array(self::BELONGS_TO, 'Kota', 'id_kota'),
-            'kecamatan' => array(self::BELONGS_TO, 'Kecamatan', 'id_kecamatan'),
-            'kelurahan' => array(self::BELONGS_TO, 'Kelurahan', 'id_kelurahan'),
-        );
+		);
 	}
 
 	/**
@@ -57,11 +52,9 @@ class MasterWilayah extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'id_provinsi' => 'Provinsi',
-			'id_kota' => 'Kota',
-			'id_kecamatan' => 'Kecamatan',
-			'id_kelurahan' => 'Kelurahan',
+			'code' => 'Code',
+			'parent_code' => 'Parent Code',
+			'name' => 'Name',
 		);
 	}
 
@@ -83,14 +76,9 @@ class MasterWilayah extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('id_provinsi',$this->id_provinsi);
-		$criteria->compare('id_kota',$this->id_kota);
-		$criteria->compare('id_kecamatan',$this->id_kecamatan);
-		$criteria->compare('id_kelurahan',$this->id_kelurahan);
-
-		// Join dengan tabel relasi untuk mendapatkan kolom name
-		$criteria->with = array('provinsi', 'kota', 'kecamatan', 'kelurahan');
+		$criteria->compare('code',$this->code);
+		$criteria->compare('parent_code',$this->parent_code);
+		$criteria->compare('name',$this->name,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -101,7 +89,7 @@ class MasterWilayah extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return MasterWilayah the static model class
+	 * @return Provinsi the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
