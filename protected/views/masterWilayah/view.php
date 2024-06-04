@@ -22,9 +22,21 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'id_provinsi',
-		'id_kota',
-		'id_kecamatan',
-		'id_kelurahan',
+		array(
+            'name' => 'id_provinsi',
+            'value' => $model->provinsi->name,
+        ),
+        array(
+            'name' => 'id_kota',
+            'value' => $model->kota->name,
+        ),
+        array(
+            'name' => 'id_kecamatan',
+            'value' => $model->kecamatan->name,
+        ),
+        array(
+            'name' => 'id_kelurahan',
+            'value' => $model->kelurahan->name,
+        ),
 	),
 )); ?>

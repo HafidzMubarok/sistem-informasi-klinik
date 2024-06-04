@@ -10,19 +10,19 @@
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('id_provinsi')); ?>:</b>
-	<?php echo CHtml::encode($data->id_provinsi); ?>
+	<?php echo CHtml::encode($data->provinsi->name); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('id_kota')); ?>:</b>
-	<?php echo CHtml::encode($data->id_kota); ?>
+	<?php echo CHtml::encode($data->kota->name); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('id_kecamatan')); ?>:</b>
-	<?php echo CHtml::encode($data->id_kecamatan); ?>
+	<?php echo CHtml::encode($data->kecamatan->name); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('id_kelurahan')); ?>:</b>
-	<?php echo CHtml::encode($data->id_kelurahan); ?>
+	<?php echo CHtml::encode($data->kelurahan->name); ?>
 	<br />
 
 
