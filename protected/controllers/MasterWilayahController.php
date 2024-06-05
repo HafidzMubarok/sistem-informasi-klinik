@@ -28,7 +28,7 @@ class MasterWilayahController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'getKotaByProvinsi', 'getKecamatanByKota', 'getKelurahanByKecamatan'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -66,9 +66,9 @@ class MasterWilayahController extends Controller
 
 		// Ambil data dari tabel relasi untuk select options
 		$provinsiList = CHtml::listData(Provinsi::model()->findAll(), 'code', 'name');
-		$kotaList = CHtml::listData(Kota::model()->findAll(), 'code', 'name');
-		$kecamatanList = CHtml::listData(Kecamatan::model()->findAll(), 'code', 'name');
-		$kelurahanList = CHtml::listData(Kelurahan::model()->findAll(), 'code', 'name');
+		$kotaList = array();
+		$kecamatanList = array();
+		$kelurahanList = array();
 
 		if (isset($_POST['MasterWilayah'])) {
 			$model->attributes = $_POST['MasterWilayah'];
@@ -97,9 +97,9 @@ class MasterWilayahController extends Controller
 
 		// Ambil data dari tabel relasi untuk select options
 		$provinsiList = CHtml::listData(Provinsi::model()->findAll(), 'code', 'name');
-		$kotaList = CHtml::listData(Kota::model()->findAll(), 'code', 'name');
-		$kecamatanList = CHtml::listData(Kecamatan::model()->findAll(), 'code', 'name');
-		$kelurahanList = CHtml::listData(Kelurahan::model()->findAll(), 'code', 'name');
+		$kotaList = CHtml::listData(Kota::model()->findAll('parent_code=:provinsi_code', array(':provinsi_code' => $model->id_provinsi)), 'code', 'name');
+		$kecamatanList = CHtml::listData(Kecamatan::model()->findAll('parent_code=:kota_code', array(':kota_code' => $model->id_kota)), 'code', 'name');
+		$kelurahanList = CHtml::listData(Kelurahan::model()->findAll('parent_code=:kecamatan_code', array(':kecamatan_code' => $model->id_kecamatan)), 'code', 'name');
 
 		if (isset($_POST['MasterWilayah'])) {
 			$model->attributes = $_POST['MasterWilayah'];
@@ -115,6 +115,75 @@ class MasterWilayahController extends Controller
 			'kecamatanList' => $kecamatanList,
 			'kelurahanList' => $kelurahanList,
 		));
+	}
+
+	public function actionGetKotaByProvinsi()
+	{
+		if(isset($_POST['provinsi_id']))
+		{
+			$provinsiId = (int) $_POST['provinsi_id'];
+
+			// Debug: Cek apakah provinsi_id benar
+			error_log("provinsi_id: " . $provinsiId);
+
+			$data = Kota::model()->findAll('parent_code=:provinsi_code', array(':provinsi_code' => $provinsiId));
+
+			// Debug: Cek jumlah data yang ditemukan
+			error_log("Jumlah data kota: " . count($data));
+
+			$data = CHtml::listData($data, 'code', 'name');
+			foreach ($data as $value => $name) {
+				echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
+			}
+		} else {
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+		}
+	}
+
+	public function actionGetKecamatanByKota()
+	{
+		if(isset($_POST['kota_id']))
+		{
+			$kotaId = (int) $_POST['kota_id'];
+
+			// Debug: Cek apakah provinsi_id benar
+			error_log("kota_id: " . $kotaId);
+
+			$data = Kecamatan::model()->findAll('parent_code=:kota_code', array(':kota_code' => $kotaId));
+
+			// Debug: Cek jumlah data yang ditemukan
+			error_log("Jumlah data kecamatan: " . count($data));
+
+			$data = CHtml::listData($data, 'code', 'name');
+			foreach ($data as $value => $name) {
+				echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
+			}
+		} else {
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+		}
+	}
+
+	public function actionGetKelurahanByKecamatan()
+	{
+		if(isset($_POST['kecamatan_id']))
+		{
+			$kecamatanId = (int) $_POST['kecamatan_id'];
+
+			// Debug: Cek apakah provinsi_id benar
+			error_log("kecamatan_id: " . $kecamatanId);
+
+			$data = Kelurahan::model()->findAll('parent_code=:kecamatan_code', array(':kecamatan_code' => $kecamatanId));
+
+			// Debug: Cek jumlah data yang ditemukan
+			error_log("Jumlah data kelurahan: " . count($data));
+
+			$data = CHtml::listData($data, 'code', 'name');
+			foreach ($data as $value => $name) {
+				echo CHtml::tag('option', array('value' => $value), CHtml::encode($name), true);
+			}
+		} else {
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+		}
 	}
 
 	/**

@@ -15,7 +15,7 @@ $this->menu=array(
 <?php echo $this->renderPartial('_form', array(
     'model'=>$model,
     'provinsiList' => $provinsiList,
-    'kotaList' => $kotaList,
-    'kecamatanList' => $kecamatanList,
-    'kelurahanList' => $kelurahanList,
+    'kotaList' => array(),
+    'kecamatanList' => array(),
+    'kelurahanList' => array(),
 )); ?>
