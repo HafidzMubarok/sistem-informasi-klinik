@@ -49,22 +49,22 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
         array(
             'name' => 'id_provinsi',
             'value' => '$data->provinsi->name',
-            'filter' => CHtml::listData(Provinsi::model()->findAll(), 'id', 'name'),
+            'filter' => CHtml::listData(Provinsi::model()->findAll(), 'code', 'name'),
         ),
         array(
             'name' => 'id_kota',
             'value' => '$data->kota->name',
-            'filter' => CHtml::listData(Kota::model()->findAll(), 'id', 'name'),
+            'filter' => CHtml::listData(Kota::model()->findAll(), 'code', 'name'),
         ),
         array(
             'name' => 'id_kecamatan',
             'value' => '$data->kecamatan->name',
-            'filter' => CHtml::listData(Kecamatan::model()->findAll(), 'id', 'name'),
+            'filter' => CHtml::listData(Kecamatan::model()->findAll(), 'code', 'name'),
         ),
         array(
             'name' => 'id_kelurahan',
             'value' => '$data->kelurahan->name',
-            'filter' => CHtml::listData(Kelurahan::model()->findAll(), 'id', 'name'),
+            'filter' => CHtml::listData(Kelurahan::model()->findAll(), 'code', 'name'),
         ),
 		array(
 			'class'=>'CButtonColumn',
